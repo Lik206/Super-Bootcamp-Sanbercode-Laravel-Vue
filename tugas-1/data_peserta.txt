@@ -1,0 +1,6 @@
+Data Peserta Super Bootcamp Laravel Vue Development
+1. Nama: Abdul Cholik
+2. Email: abdulcholik458@gmail.com
+3. Sistem Operasi yang digunakan: Linux
+4. Akun Gitlab/Github: https://github.com/Lik206
+5. Akun Telegram: https://t.me/Lik_206
