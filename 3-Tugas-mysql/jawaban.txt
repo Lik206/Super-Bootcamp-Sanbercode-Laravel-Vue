@@ -1,0 +1,59 @@
+Soal
+
+a. Buatlah Table movie dan Genre pada ERD yang sudah dibuat masukan sintax jawaban ke jawaban.txt
+b. insert data dan masukan sintax yang berhasil pada jawaban.txt
+
+table genre yaitu genre action dan drama
+table movie insert 2 data dengan genre action dan 3 data dengan genre drama
+
+c. Select data
+
+tampilan semua movie dengan genre action
+lakukan join untuk mengabungkan table movie dan genre 
+
+------------------------------------------------
+
+Jawaban
+
+a. Buat Table
+
+- table movie
+
+CREATE TABLE Movie (
+    id int AUTO_INCREMENT PRIMARY KEY,
+    title varchar(255) NOT null,
+    summary text NOT null,
+    year int NOT null,
+    poster varchar(255) NOT null,
+    genre_id int,
+    FOREIGN KEY(genre_id) REFERENCES genre(id)
+    );
+
+- table genre
+
+CREATE TABLE Genre( 
+    id int AUTO_INCREMENT PRIMARY KEY,
+    name varchar(255) 
+    );
+
+b. insert data
+
+-table movie
+
+INSERT INTO Movie(title,summary,year,poster,genre_id) VALUES
+('The Raid', 'film aksi dari indonesia', 2011, 'the_raid.png', 1),
+('Fast & Furious: Hobbs & Shaw', 'film aksi dari barat', 2019, 'fast-furious.png',1),
+('Cek Toko Sebelah', 'film drama dari indonesia 1', 2016, 'cektokosebelah.jpg', 2),
+('Ngeri-Ngeri Sedang', 'film drama dari indonesia 2', 2022, 'ngeri2sedap.jpg', 2),
+('Surat Kecil Untuk Tuhan', 'film drama dari indonesia 3', 2017, 'suratkeciluntuktuhan.jpg', 2);
+
+-table genre
+
+INSERT INTO Genre(name) VALUES ('action'), ('drama');
+
+c. Select data
+
+table semua movie bedasarkan genre
+join table
+
+SELECT Movie.*, Genre.name AS genre FROM Movie INNER JOIN Genre ON Movie.genre_id = Genre.id;
