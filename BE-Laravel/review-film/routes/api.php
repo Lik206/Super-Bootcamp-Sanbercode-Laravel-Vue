@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\API\CastController;
+use App\Http\Controllers\API\GenresController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\MovieController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,5 +22,8 @@ use App\Http\Controllers\API\MovieController;
 Route::prefix('v1')->group(function () {
     
     Route::post('/movie', [MovieController::class, 'store']);
+    Route::apiResource('cast', CastController::class);
+    Route::apiResource('genre', GenresController::class);
+   
 
 });
