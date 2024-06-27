@@ -24,9 +24,9 @@ class MovieRequest extends FormRequest
         return [
             'title' => 'required|max:255',
             'summary' => 'required',
-            'year' => 'required|date',
-            'poster' => 'mimes:jpg,bmp,png',
-            'genre_id' => 'required'
+            'poster' => 'mimes:jpg,jpeg,png',
+            'genre_id' => 'required',
+            'year' => 'required|min:4|max:4|not_in:0'
         ];
     }
 
@@ -37,7 +37,8 @@ class MovieRequest extends FormRequest
             'title.max' => 'title maksimal 255 karakter',
             'summary.required' => 'summary harus diisi',
             'year.required' => 'year harus diisi',
-            'year.date' => 'year harus diisi dengan format date',
+            'year.min' => 'year bukan dari tahun atau kurang dari 4 angka',
+            'year.max' => 'year bukan dari tahun atau melebihi 4 angka',
             'poster.mimes' => 'poster hanya boleh diisi dengan format jpg,bmp,png',
             'genre_id.required' => 'genre_id harus diisi'
         ];

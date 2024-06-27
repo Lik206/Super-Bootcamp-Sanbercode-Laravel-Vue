@@ -21,9 +21,8 @@ use App\Http\Controllers\API\MovieController;
 
 Route::prefix('v1')->group(function () {
     
-    Route::post('/movie', [MovieController::class, 'store']);
     Route::apiResource('cast', CastController::class);
     Route::apiResource('genre', GenresController::class);
-   
+    Route::apiResource('movie', MovieController::class);
 
 });
