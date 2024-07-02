@@ -10,9 +10,11 @@ use Illuminate\Http\Request;
 
 class CastController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {
+        $this->middleware(['auth:api', 'onlyAdmin'])->except(['index', 'show']);
+    }
+    
     public function index()
     {
         $casts = Cast::all();

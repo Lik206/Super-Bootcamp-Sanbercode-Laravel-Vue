@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 
 class GenresController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth:api', 'onlyAdmin'])->except(['index','show']);
+    }
     /**
      * Display a listing of the resource.
      */

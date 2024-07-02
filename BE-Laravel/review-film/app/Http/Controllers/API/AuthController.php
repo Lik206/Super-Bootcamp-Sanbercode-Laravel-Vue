@@ -18,6 +18,7 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['register','login',]]);
+        $this->middleware('isVerificationAccount')->only('updateUser');
     }
 
     protected function createOtpCode($user) {
@@ -172,12 +173,6 @@ class AuthController extends Controller
         $getUser = auth()->user();
         $user = User::find($getUser->id);
         
-        if(is_null($user->email_verified_at)) {
-            return response()->json([
-                'message' => 'Email belum di verifikasi'
-            ], 403);
-        }
-
         $user->name = $request['name'];
 
         $user->save();

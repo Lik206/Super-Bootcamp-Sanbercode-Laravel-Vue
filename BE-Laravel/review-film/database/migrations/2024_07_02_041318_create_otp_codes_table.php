@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('otp_codes', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('otp');
+            $table->integer('otp')->unique();
 
             $table->uuid('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
