@@ -6,20 +6,13 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Genres extends Model
+class Reviews extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $table = 'genres';
+    protected $table = 'reviews';
 
     protected $fillable = [
-        'name'
+        'critics', 'rating', 'user_id', 'movie_id'
     ];
-
-    protected $hidden = [
-        'created_at', 'updated_at'
-    ];
-
-    public $timestamps = false;
-
 }

@@ -55,11 +55,11 @@ class AuthController extends Controller
         $userData = User::where('email', $request->email)->first();
 
         $this->createOtpCode($userData);
-        $otpCode = OtpCode::where('user_id', $userData->id)->first();
+        
 
         return response()->json([
             'message' => 'berhasil generate ulang otp code',
-            'otp' => $otpCode,
+            
         ]);
     }
 

@@ -79,7 +79,7 @@ class MovieController extends Controller
      */
     public function show(string $id)
     {
-        $movie = Movie::find($id);
+        $movie = Movie::with('genre','listCast', 'listReviews')->find($id);
 
         if (is_null($movie)) {
             return response()->json([
