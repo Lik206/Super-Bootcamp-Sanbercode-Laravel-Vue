@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\GenerateOtp;
+use App\Mail\RegisterMail;
 use App\Models\OtpCode;
 use App\Models\Roles;
 use App\Models\User;
@@ -11,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -55,6 +58,7 @@ class AuthController extends Controller
         $userData = User::where('email', $request->email)->first();
 
         $this->createOtpCode($userData);
+        Mail::to($userData->email)->queue(new GenerateOtp($userData));
         
 
         return response()->json([
@@ -85,8 +89,10 @@ class AuthController extends Controller
         ]);
 
         $this->createOtpCode($user);
+        Mail::to($user->email)->queue(new RegisterMail($user));
 
         $token = JWTAuth::fromUser($user);
+
 
         return response()->json([
             'message' => 'User berhasil di register',
