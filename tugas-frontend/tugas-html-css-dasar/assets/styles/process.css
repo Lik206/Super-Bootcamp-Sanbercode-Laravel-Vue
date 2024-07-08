@@ -1,0 +1,44 @@
+main {
+  display: flex;
+  justify-content: center;
+}
+
+section {
+    margin-top: 150px;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  background-color: white;
+}
+
+nav > img {
+  width: 200px;
+  margin-left: 10px;
+}
+
+nav > ul > li {
+  display: inline;
+  margin-right: 10px;
+}
+
+nav > ul > li > a {
+  text-decoration: none;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: black;
+  color: white;
+  padding: 10px;
+}
+
+footer > p {
+  text-align: center;
+}
