@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>VueJS Course</title>
+  <style>
+
+</style>
+</head>
+
+<body>
+  <div id="app">
+    <label >Role</label> <br>
+        <select v-model="role">
+            <option value=""></option>
+            <option value="1">Imposter</option>
+            <option value="2">Crew</option>
+    </select>
+    <p v-if="role == 1">Tugas Anda adalah untuk membunuh semua Crew</p>
+    <p v-else-if="role == 2">Anda Bertugas untuk menyelesaikan semua task dan jangan sampai terbunuh</p>
+
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    let vm = Vue.createApp({
+    data() {
+        return {
+            role: ''
+        }
+    }
+
+    }).mount('#app');
+  </script>
+</body>
+
+</html>

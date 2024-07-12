@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Soal 3</title>
+    <style>
+      label,
+      input {
+        display: block;
+        margin-bottom: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <ul v-if="isError" v-for="err in errMessage">
+        <li>{{err}}</li>
+      </ul>
+      <form @submit.prevent="onSubmit">
+        <label for="username">username</label>
+        <input v-model="username" type="text" />
+        <label for="password">password</label>
+        <input v-model="password" type="password" />
+        <input type="submit" value="submit" />
+      </form>
+      <h2>Output</h2>
+      <div v-if="isError == false">
+        <p>username: {{output.username}}</p>
+        <p>password: {{output.password}}</p>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+      let vm = Vue.createApp({
+        setup() {
+          const username = Vue.ref('')
+          const password = Vue.ref('')
+          const isError = Vue.ref(false)
+          const errMessage = Vue.ref([])
+          const output = Vue.ref({})
+
+          function onSubmit() {
+            if (username.value.length < 9 && password.value.length < 9) {
+              isError.value = true
+              let err =
+                'username harus lebih dari 8,password harus lebih dari 8'
+              errMessage.value = err.split(',')
+              console.log(errMessage.value)
+            } else if (username.value.length < 9) {
+              isError.value = true
+              let err = 'username harus lebih dari 8'
+              errMessage.value = err.split(',')
+              console.log(errMessage.value)
+            } else if (password.value.length < 9) {
+              isError.value = true
+              let err = 'password harus lebih dari 8'
+              errMessage.value = err.split(',')
+              console.log(errMessage.value)
+            } else {
+              isError.value = false
+              errMessage.value = ''
+              output.value = {
+                username: username.value,
+                password: password.value,
+              }
+              console.log(output.value)
+            }
+          }
+          return {
+            username,
+            password,
+            isError,
+            errMessage,
+            output,
+            onSubmit,
+          }
+        },
+      }).mount('#app')
+    </script>
+  </body>
+</html>
