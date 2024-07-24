@@ -1,5 +1,7 @@
 <script setup>
 import AuthComponent from '@/components/AuthComponent.vue'
+
+
 </script>
 <template>
     <div v-motion :initial="{
@@ -9,7 +11,7 @@ import AuthComponent from '@/components/AuthComponent.vue'
     }" class="flex justify-center h-96 mt-20 items-center">
         <section class="px-8 py-20  rounded-xl ">
 
-            <AuthComponent title="Login" />
+            <AuthComponent title="Login"/>
         </section>
     </div>
 </template>

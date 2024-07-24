@@ -1,8 +1,15 @@
 <script setup>
 import { ref } from 'vue'
-// import { useMotion } from '@vueuse/motion';
 import { RouterLink } from 'vue-router'
 import NavbarMobile from '@/components/NavbarMobile.vue'
+import { useAuthStore } from '@/stores/AuthStore';
+
+const authStore = useAuthStore()
+const {logoutUser} = authStore
+
+const handleLogout = () => {
+    logoutUser()
+}
 
 const showMenu = ref(false);
 
@@ -34,8 +41,9 @@ const motionProps = ref({
                 <a class="btn btn-ghost text-xl">MyFilmList</a>
             </div>
             <div class="flex gap-3">
-                <RouterLink :to="{ name: 'login' }" active-class="font-bold">Login</RouterLink>
-                <RouterLink :to="{ name: 'register' }" active-class="font-bold">Register</RouterLink>
+                <RouterLink v-if="!authStore.token" :to="{ name: 'login' }" active-class="font-bold">Login</RouterLink>
+                <RouterLink v-if="!authStore.token" :to="{ name: 'register' }" active-class="font-bold">Register</RouterLink>
+                <button @click="handleLogout" v-if="authStore.token" class="btn btn-secondary">Logout</button>
             </div>
         </div>
         <NavbarMobile v-motion="motionProps" v-if="showMenu" />
