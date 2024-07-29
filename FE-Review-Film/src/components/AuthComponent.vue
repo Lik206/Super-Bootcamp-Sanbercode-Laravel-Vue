@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from 'vue'
+import {reactive} from 'vue'
 import { useAuthStore } from '@/stores/AuthStore'
 
 const authStore = useAuthStore()
@@ -19,17 +19,26 @@ const props = defineProps({
 const handleSubmit = () => {
   if(props.title === 'Login') {
     loginUser(userInput)
+  }else {
+     register(userInput)
   }
-  register(userInput)
+  
 }
 </script>
 
 <template>
   <div>
     <h1 class="text-center mb-5 text-2xl m-[-50px]">{{ props.title }}</h1>
-    <div v-if="props.title == 'Login' && authStore.isError" role="alert" class="alert alert-error mb-5">
+    <div v-if="props.title == 'Login' && authStore.isError &&authStore.errMessage" role="alert" class="alert alert-error mb-5">
       <span>{{ authStore.errMessage }}</span>
     </div>
+    <section v-if="props.title == 'Register' && authStore.isError && authStore.msgForRegister" >
+      <div  role="alert" class="alert alert-error mb-5"  v-for="(msg, key) in authStore.msgForRegister" :key="key">
+        <p v-if="msg && msg[0] ">
+          {{ msg[0] }}
+        </p>
+      </div>
+    </section>
     <form @submit.prevent="handleSubmit()" class="flex flex-col gap-5">
       <label v-if="props.title !== 'Login'" class="input input-bordered flex items-center gap-2">
         <svg

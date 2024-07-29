@@ -38,7 +38,7 @@ const motionProps = ref({
                 </button>
             </div>
             <div class="flex-1">
-                <a class="btn btn-ghost text-xl">MyFilmList</a>
+                <RouterLink to='/' class="btn btn-ghost text-xl">MyFilmList</RouterLink>
             </div>
             <div class="flex gap-3">
                 <RouterLink v-if="!authStore.token" :to="{ name: 'login' }" active-class="font-bold">Login</RouterLink>

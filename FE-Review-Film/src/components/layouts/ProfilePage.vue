@@ -1,10 +1,26 @@
 <script setup>
+import { CustomAPI } from '@/api';
 import { useAuthStore } from '@/stores/AuthStore'
+import { onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router'
 
 const authStore = useAuthStore()
-authStore.getMe()
-const { name, email } = authStore.user
+const name = ref('')
+const email = ref('')
+
+const fetchUser = async() => {
+  const {data} = await CustomAPI.get('/me', {
+        headers: { Authorization: `Bearer ${authStore.token}` }
+      })
+      const{name:nameUser, email:emailUser} = data.user
+
+      name.value = nameUser
+      email.value = emailUser
+}
+
+onMounted(() => {
+  fetchUser()
+})
 </script>
 <template>
   <div

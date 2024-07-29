@@ -9,6 +9,7 @@ import CastView from '@/views/CastView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import EditView from '@/views/EditView.vue'
 import { useAuthStore } from '@/stores/AuthStore'
+import DashboardView from '@/views/DashboardView.vue'
 
 
 const router = createRouter({
@@ -30,6 +31,12 @@ const router = createRouter({
       name: 'register',
       component: RegisterView,
       meta: { requiredAuth: true }
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: DashboardView,
+      meta: {roles: true}
     },
     {
       path: '/verification-account',
@@ -55,7 +62,7 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: ProfileView,
-      meta: { isAuth: true }
+      meta: { isAuth: true, verification: true }
     },
     {
       path: '/profile/edit',
@@ -84,6 +91,16 @@ router.beforeEach(async (to) => {
     alert('belum verifikasi email')
     return {
       name: 'verification'
+    }
+  }
+
+  if(to.meta.roles) {
+    const userRoles = authStore.user.roles.name
+    if(userRoles !== 'admin') {
+      alert('hanya admin yang bisa mengakses halaman ini')
+      return {
+        path: '/'
+      }
     }
   }
 

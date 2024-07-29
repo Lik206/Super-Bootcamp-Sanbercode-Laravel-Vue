@@ -3,10 +3,14 @@ import { useAuthStore } from '@/stores/AuthStore';
 import { ref } from 'vue';
 
 const authStore = useAuthStore()
-const updateName = ref(null)
+const {user} = authStore
+const {name} = user
+const updateName = ref(name)
 const handleUpdateUser = () => {
   authStore.updateUser(updateName)
 }
+
+
 </script>
 <template>
   <div class="h-96 flex justify-center items-center">
@@ -26,9 +30,9 @@ const handleUpdateUser = () => {
             d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z"
           />
         </svg>
-        <input v-model="updateName" type="text" class="grow" placeholder="Username" />
+        <input v-model="updateName" type="text" class="grow" placeholder="Username" autofocus/>
       </label>
-        <button @click="handleUpdateUser()" class="btn btn-secondary btn-sm w-24 mt-5">edit</button>
+        <button  @keyup.enter="handleUpdateUser()" @click="handleUpdateUser()" class="btn btn-secondary btn-sm w-24 mt-5">edit</button>
       </div>
     </div>
   </div>

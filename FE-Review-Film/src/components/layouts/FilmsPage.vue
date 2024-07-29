@@ -1,13 +1,24 @@
 <script setup>
-import { ref } from 'vue';
+import { CustomAPI } from '@/api';
+import { onMounted, ref } from 'vue';
 
 const films = ref([
-    { img: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTF60Qpup1FsCnl-7VTsHzZr8h_yTt9xJXlwZR6FGzitLompt90' },
-    { img: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTF60Qpup1FsCnl-7VTsHzZr8h_yTt9xJXlwZR6FGzitLompt90' },
-    { img: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTF60Qpup1FsCnl-7VTsHzZr8h_yTt9xJXlwZR6FGzitLompt90' },
-    { img: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTF60Qpup1FsCnl-7VTsHzZr8h_yTt9xJXlwZR6FGzitLompt90' },
-    { img: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTF60Qpup1FsCnl-7VTsHzZr8h_yTt9xJXlwZR6FGzitLompt90' },
 ])
+
+const getAllMovie = async() => {
+    try {
+        const {data} = await CustomAPI.get('/movie')
+        films.value = data.data
+        console.log(data.data);
+    } catch (error) {
+        const {response} = error
+        console.log(response.data.message);
+    }
+}
+
+onMounted(() => {
+    getAllMovie()
+})
 </script>
 
 <template>
@@ -22,13 +33,13 @@ const films = ref([
         <div class="p-10 flex justify-center">
             <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8 w-[75%]">
                 <div v-for="(film, index) in films" :key="index"
-                    class="card card-compact bg-base-100 w-48 shadow-xl border-5">
+                    class="card card-compact bg-base-100 w-60 shadow-xl border-5">
                     <figure>
-                        <img :src="film.img" alt="film" />
+                        <img class="h-48 object-cover" :src="film.poster" alt="film" />
                     </figure>
                     <div class="card-body">
-                        <h2 class="card-title">Shoes!</h2>
-                        <p>If a dog chews shoes whose shoes does he choose?</p>
+                        <h2 class="card-title">{{film.title}}</h2>
+                        <p>{{film.summary}}</p>
                         <div class="card-actions justify-end">
                             <button class="btn" onclick="my_modal_4.showModal()">open modal</button>
                         </div>

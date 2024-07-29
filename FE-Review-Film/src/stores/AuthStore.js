@@ -9,12 +9,19 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : null
   )
   const user = ref(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null)
+  const role = ref(null)
 
   const isError = ref(false)
   const errMessage = ref('')
+  const msgForRegister = ref({
+    email: [],
+    password: [],
+  })
 
   const register = async (inputData) => {
     try {
+      isError.value = false
+      msgForRegister.value = ''
       const { name, email, password, passwordConfirmation } = inputData
 
       const { data } = await CustomAPI.post('/auth/register', {
@@ -26,6 +33,8 @@ export const useAuthStore = defineStore('auth', () => {
       
       token.value = data.token
       user.value = data.user
+      
+      
 
       localStorage.setItem('token', JSON.stringify(data.token))
       localStorage.setItem('user', JSON.stringify(data.user))
@@ -34,6 +43,9 @@ export const useAuthStore = defineStore('auth', () => {
       router.push({name: 'verification'})
     } catch (error) {
       console.log(error)
+      isError.value = true
+      const{email, password} = error.response.data
+      msgForRegister.value = {email, password}
     }
   }
 
@@ -53,6 +65,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       token.value = tokenUser
       user.value = userData
+      role.value = userData.roles.name
 
       localStorage.setItem('token', JSON.stringify(tokenUser))
       localStorage.setItem('user', JSON.stringify(userData))
@@ -80,6 +93,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       token.value = null
       user.value = null
+      role.value = null
 
       router.push({ name: 'login' })
     } catch (error) {
@@ -115,7 +129,7 @@ export const useAuthStore = defineStore('auth', () => {
         console.log(res.data)
         getMe()
         alert('update username berhasil')
-        router.push({name: 'home'})
+        router.push({name: 'profile'})
 
       } catch (error) {
         console.log(error)
@@ -149,7 +163,7 @@ export const useAuthStore = defineStore('auth', () => {
       )
 
       console.log(res.data)
-      getMe()
+      loginUser(user.value)
       alert('berhasil verifikasi')
       router.push({name: 'home'})
     } catch (error) {
@@ -168,6 +182,8 @@ export const useAuthStore = defineStore('auth', () => {
     getMe,
     generateOtp,
     verification,
-    updateUser
+    updateUser,
+    msgForRegister,
+    role
   }
 })
