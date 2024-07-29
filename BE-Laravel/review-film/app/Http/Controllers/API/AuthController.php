@@ -85,15 +85,14 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => $roleUser->id
+            'role_id' => $roleUser->id,
         ]);
 
         $this->createOtpCode($user);
         Mail::to($user->email)->queue(new RegisterMail($user));
 
         $token = JWTAuth::fromUser($user);
-
-
+        $user = User::with('Roles')->find($user->id);
         return response()->json([
             'message' => 'User berhasil di register',
             'token' => $token,
@@ -134,6 +133,7 @@ class AuthController extends Controller
         $user->email_verified_at = $now;
         $user->save();
 
+
         $otp_code->delete();
 
         return response()->json([
@@ -145,11 +145,11 @@ class AuthController extends Controller
     public function login(Request $request) {
         $credentials = $request->only('email', 'password');
 
-        if (! $user = auth()->attempt($credentials)) {
+        if (!$user = auth()->attempt($credentials)) {
             return response()->json(['error' => 'User Invalid'], 401);
         }
 
-        $dataUser = User::where('email', $request['email'])->first();
+        $dataUser = User::with('Roles')->where('email', $request['email'])->first();
         $token = JWTAuth::fromUser($dataUser);
 
         return response()->json([
