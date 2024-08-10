@@ -1,5 +1,9 @@
 # FE-perpustakaan
 
+Link Demo Project: https://drive.google.com/file/d/1vCeyLiOse0f5I552oowVW3eQQS5eXTHk/view?usp=drive_link
+
+Link Deploy : https://super-bootcamp-sanbercode-laravel-vue-virid.vercel.app/
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
