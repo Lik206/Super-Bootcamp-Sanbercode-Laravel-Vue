@@ -68,7 +68,7 @@ class AuthController extends Controller
     public function getUser()
     {
         $user = auth()->user();
-        $dataUser = User::with('Roles')->where('id', $user->id)->first();
+        $dataUser = User::with('Roles','Profile', 'Borrow.Book')->where('id', $user->id)->first();
         return response()->json([
             "message" => "Berhasil Get User",
             "user" => $dataUser

@@ -7,6 +7,7 @@ use App\Models\Books;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class BooksController extends Controller
 {
@@ -52,16 +53,19 @@ class BooksController extends Controller
         }
 
         if ($request->hasFile('image')) {
-            $imageName = time() . '.' . $request->image->extension();
-            $request->image->storeAs('public/images', $imageName);
+            
+            $uploadResult = Cloudinary::upload($request->file('image')->getRealPath(), [
+                'folder' => 'books/images'
+            ]);
 
-            $path = Storage::url('images/' . $imageName);
+            $path = $uploadResult->getSecurePath();
+            $publicId = $uploadResult->getPublicId();
         }
 
         $createBook = [
             'title' => $request->title,
             'summary' => $request->summary,
-            'image' => env('APP_URL') . $path,
+            'image' => $path,
             'stok' => $request->stok,
             'category_id' => $request->category_id,
         ];
@@ -69,7 +73,8 @@ class BooksController extends Controller
         Books::create($createBook);
 
         return response()->json([
-            'message' => 'Data berhasil ditambahkan'
+            'message' => 'Data berhasil ditambahkan',
+            'url' => $publicId
         ], 201);
     }
 
@@ -113,36 +118,38 @@ class BooksController extends Controller
 
         if (is_null($book)) {
             return response()->json([
-                'message' => "data berdasarkan id: $id tidak ditemukan"
+                'message' => "Data berdasarkan id: $id tidak ditemukan"
             ], 404);
         }
 
         if ($request->hasFile('image')) {
-
             if ($book->image) {
                 $oldImage = basename($book->image);
-                Storage::delete('public/images/' . $oldImage);
+                $deleteImg = explode('.', $oldImage);
+
+                Cloudinary::destroy('books/images/' . $deleteImg[0]);
             }
 
-            $imageName = time() . '.' . $request->image->extension();
-            $request->image->storeAs('public/images', $imageName);
-
-            $imagePath = Storage::url('images/' . $imageName);
+            $uploadResult = Cloudinary::upload($request->file('image')->getRealPath(), [
+                'folder' => 'books/images'
+            ]);
+    
+            $path = $uploadResult->getSecurePath();
+    
+            $book->image = $path;
         }
+
 
         $book->title = $request->title;
         $book->summary = $request->summary;
-        if ($request->hasFile('image')) {
-            $book->image = env('APP_URL') . $imagePath;
-        }
         $book->stok = $request->stok;
         $book->category_id = $request->category_id;
-
 
         $book->save();
 
         return response()->json([
-            'message' => 'Data berhasil di update'
+            'message' => 'Data berhasil di update',
+            'url' => $book->image
         ], 200);
     }
 
@@ -159,16 +166,17 @@ class BooksController extends Controller
             ], 404);
         }
 
-        if ($book->poster) {
-            $getImage = basename($book->image);
+        if ($book->image) {
+            $oldImage = basename($book->image);
+            $deleteImg = explode('.', $oldImage);
 
-            Storage::delete('public/images/' . $getImage);
+            Cloudinary::destroy('books/images/'.$deleteImg[0]);
         }
 
         $book->delete();
 
         return response()->json([
-            'message' => 'Data berhasil dihapus'
+            'message' => 'Data berhasil dihapus',
         ], 200);
     }
 }

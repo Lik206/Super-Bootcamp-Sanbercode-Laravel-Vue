@@ -53,7 +53,7 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        $category = Categories::find($id);
+        $category = Categories::with('listBooks.Category')->find($id);
 
         if (is_null($category)) {
             return response()->json([

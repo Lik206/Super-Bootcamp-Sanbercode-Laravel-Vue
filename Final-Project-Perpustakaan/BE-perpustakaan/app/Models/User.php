@@ -70,4 +70,12 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsTo(Roles::class, 'role_id');
     }
+    public function Profile()
+    {
+        return $this->hasOne(Profile::class, 'user_id');
+    }
+    public function Borrow()
+    {
+        return $this->hasOne(Borrows::class, 'user_id');
+    }
 }
